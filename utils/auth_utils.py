@@ -11,7 +11,7 @@ def generate_token(user_id):
         'sub': user_id
     }
     return jwt.encode(
-        payload, current_app.config['JWT_SECRET_KEY'],algorithm='H256'
+        payload, current_app.config['JWT_SECRET_KEY'],algorithm='HS256'
     )
 
 def token_required(f):
@@ -33,7 +33,7 @@ def token_required(f):
             payload = jwt.decode(
                 token,
                 current_app.config['JWT_SECRET_KEY'],
-                algorithms=['H256']
+                algorithms=['HS256']
             )
             user_id = payload['sub']
 

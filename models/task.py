@@ -20,9 +20,8 @@ class Task:
         }
 
         result = mongo.db.tasks.insert_one(task)
-        task['_id'] = result.inserted_id
 
-        return result
+        return mongo.db.tasks.find_one({'_id': result.inserted_id})
     
     @staticmethod
     def find_by_id(task_id, user_id=None):
@@ -50,7 +49,7 @@ class Task:
             if 'status' in update_data and update_data['status'] not in Task.VALID_STATUSES:
                 update_data['status'] = 'pending'
 
-            result = mongo.db.update_one(
+            result = mongo.db.tasks.update_one(
                 {'_id': object_id, 'user_id': user_id},
                 {'$set': update_data}
             )
